@@ -22,6 +22,8 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class CuadroDeDialogo extends JDialog implements ActionListener {
     private View view;
@@ -35,6 +37,14 @@ public class CuadroDeDialogo extends JDialog implements ActionListener {
         setLocationRelativeTo(padre);
         setLayout(new GridBagLayout());
         setTitle("Gano el juego");
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Tablero.cargarTablero();
+                view.actualizarCeldas();
+                dispose();
+            }
+        });
 
         GridBagConstraints conf = new GridBagConstraints();
         conf.gridx = conf.gridy = 0;
