@@ -1,21 +1,37 @@
+/*
+ * Copyright (C) 2017 Félix Pedrozo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package rompecabezas;
 
-import java.util.Scanner;
-import static java.lang.System.out;
 import static java.lang.Math.random;
+import static java.lang.System.arraycopy;
 
 public class Tablero {
-    private int [][] tablero = new int [4][4];
-    private int [] poscVacio = new int [2];
-    public static final int VACIO = 16;
+    static int [][] tablero;
+    static int [] poscVacio = new int [2];
+    static final int VACIO = 16;
 
-    Tablero () {
+    static {
+        tablero = new int [4][4];
         cargarTablero();
-        mostrarTablero();
-        hallarCeldaVacia();
     }
 
-    private void cargarTablero () {
+    static void cargarTablero () {
         int valor = 1;
 
         //Cargo la matriz con numeros del 1 al 16.
@@ -40,9 +56,11 @@ public class Tablero {
                 tablero [fm][cm] = aux;
             }
         }
+
+        hallarCeldaVacia();
     }
 
-    private void hallarCeldaVacia () {
+    private static void hallarCeldaVacia () {
         for (int f = 0; f < 4; f ++) {
             for (int c = 0; c < 4; c ++) {
                 if (tablero [f][c] == VACIO) {
@@ -54,32 +72,22 @@ public class Tablero {
         }
     }
 
-    void mostrarTablero () {
-        for (int f = 0; f < 4; f ++) {
-            for (int c = 0; c < 4; c ++)
-                out.print (tablero [f][c] + " | ");
-            out.println ();
-        }
-    }
-
-    public void moverPiezaHorizontal (int c1, int c2) {
+    private void moverPiezaHorizontalmente (int c1, int c2) {
         final int fila = poscVacio [0];
 
-        if (c1 > c2) {
+        if (c1 > c2)
             //Mover hacia la derecha.
-            for (int i = c1; i > c2; i --)
-                tablero [fila][i] = tablero [fila][i - 1];
-        } else {
+            arraycopy(tablero[fila], c2, tablero[fila], c2 + 1, c1 - c2);
+        else
             //Mover hacia la izquierda.
-            for (int i = c1; i < c2; i ++)
-                tablero [fila][i] = tablero [fila][i + 1];
-        }
+            arraycopy(tablero [fila], c1 + 1, tablero [fila], c1, c2 - c1);
+
         tablero [fila][c2] = VACIO;
         //Actualizo posición de vacio.
         poscVacio [1] = c2;
     }
     
-    public void moverPiezaVerticalmente (int f1, int f2) {
+    private void moverPiezaVerticalmente (int f1, int f2) {
         final int colum  = poscVacio [1];
 
         if (f1 > f2) {
@@ -96,31 +104,18 @@ public class Tablero {
         poscVacio [0] = f2;
     }
 
-    public void celdaPulsada (int f, int c) {
+    public boolean moverPieza (int f, int c) {
         if (f != poscVacio [0] || c != poscVacio [1]) {
-            if (f == poscVacio[0])
-                moverPiezaHorizontal(poscVacio[1], c);
+            if (f == poscVacio[0]) {
+                moverPiezaHorizontalmente(poscVacio[1], c);
+                return true;
 
-            else if (c == poscVacio[1])
+            } else if (c == poscVacio[1]) {
                 moverPiezaVerticalmente(poscVacio[0], f);
+                return true;
+            }
         }
-    }
 
-    public static void main (String [] args) {
-        Tablero t = new Tablero();
-
-        Scanner leer = new Scanner(System.in);
-
-        int f, c;
-        while (true) {
-            out.print ("Fila : ");
-            f = leer.nextInt();
-            out.print ("Columna : ");
-            c = leer.nextInt();
-
-            t.celdaPulsada(f, c);
-            t.mostrarTablero();
-            out.println ("-------------------------------------------");
-        }
+        return false;
     }
 }
