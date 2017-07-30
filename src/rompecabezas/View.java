@@ -100,14 +100,7 @@ public class View extends JFrame {
 
         for (int f = 0; f < 4; f ++) {
             for (int c = 0; c < 4; c ++) {
-                celdas [f][c] = new JLabel("" + tablero [f][c], JLabel.CENTER);
-                celdas [f][c].setOpaque(true);
-                celdas [f][c].setBackground(Color.WHITE);
-                celdas [f][c].addMouseListener(controller);
-                celdas [f][c].setForeground(new Color(30, 30, 30));
-                celdas [f][c].setName(String.format("%d,%d", f, c));
-                celdas [f][c].setFont(new Font("Tahoma", Font.BOLD, 25));
-                celdas [f][c].setBorder(BorderFactory.createEtchedBorder());
+                celdas [f][c] = celdaConfig("" + tablero [f][c], String.format("%d,%d", f, c));
 
                 if (tablero [f][c] == VACIO)
                     celdas [f][c].setVisible(false);
@@ -118,6 +111,20 @@ public class View extends JFrame {
         }
 
         return panel;
+    }
+
+    private JLabel celdaConfig (String text, String name) {
+        JLabel label = new JLabel(text, JLabel.CENTER);
+        label.setOpaque(true);
+        label.setOpaque(true);
+        label.setBackground(Color.WHITE);
+        label.addMouseListener(controller);
+        label.setForeground(new Color(30, 30, 30));
+        label.setName(name);
+        label.setFont(new Font("Tahoma", Font.BOLD, 25));
+        label.setBorder(BorderFactory.createEtchedBorder());
+
+        return label;
     }
 
     boolean gano () {
