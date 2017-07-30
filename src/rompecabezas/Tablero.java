@@ -22,8 +22,13 @@ import static java.lang.Math.random;
 import static java.lang.System.arraycopy;
 
 public class Tablero {
+    //Guarda las posiciones de las celdas.
     static int [][] tablero;
+
+    //Guarda la posición de la celda vacia.
     static int [] poscVacio = new int [2];
+
+    //Constante que representa al valor de la celda vacia.
     static final int VACIO = 16;
 
     static {
@@ -60,6 +65,7 @@ public class Tablero {
         hallarCeldaVacia();
     }
 
+    //Determino la posición de la celda vacia (Celda con valor 16).
     private static void hallarCeldaVacia () {
         for (int f = 0; f < 4; f ++) {
             for (int c = 0; c < 4; c ++) {
@@ -104,7 +110,8 @@ public class Tablero {
         poscVacio [0] = f2;
     }
 
-    public boolean moverPieza (int f, int c) {
+    boolean moverPieza (int f, int c) {
+        //Compruebo si la posición obtenida no es la celda vacia (celda con valor 16).
         if (f != poscVacio [0] || c != poscVacio [1]) {
             if (f == poscVacio[0]) {
                 moverPiezaHorizontalmente(poscVacio[1], c);
@@ -116,6 +123,7 @@ public class Tablero {
             }
         }
 
+        //Retorna falso si no se ha podido mover la pieza.
         return false;
     }
 }

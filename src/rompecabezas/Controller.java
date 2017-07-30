@@ -36,15 +36,18 @@ public class Controller extends MouseAdapter implements ActionListener {
     @Override
     public void mousePressed(MouseEvent e) {
         JLabel label = (JLabel)e.getSource();
+        //Se obtiene la posición de  la celda pulsada.
         String [] posc = label.getName().split(",");
 
         int f = Integer.parseInt(posc [0]);
         int c = Integer.parseInt(posc [1]);
 
+        //Se comprueba si la pieza se ha movido.
         if (tablero.moverPieza(f, c)) {
             view.actualizarCeldas();
 
             if (view.gano ()) {
+                //Muestro la celda numero 16.
                 view.mostrarCeldaVacia();
                 new CuadroDeDialogo(view);
             }
@@ -56,6 +59,7 @@ public class Controller extends MouseAdapter implements ActionListener {
         if (e.getActionCommand ().equals("jmiSalir"))
             System.exit(0);
 
+        //Juego nuevo.
         else {
             Tablero.cargarTablero();
             view.actualizarCeldas();

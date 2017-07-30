@@ -26,6 +26,7 @@ import static rompecabezas.Tablero.tablero;
 
 public class View extends JFrame {
     private JLabel[][] celdas = new JLabel [4][4];
+
     private final Controller controller;
 
     View () {
@@ -52,15 +53,19 @@ public class View extends JFrame {
         setVisible(true);
     }
 
+    //Comprueba si hay nuevos valores para actualizar la celda.
     void actualizarCeldas () {
         for (int f = 0; f < 4; f ++) {
             for (int c = 0; c < 4; c ++) {
+                //Compruebo si el valor de la celda ha cambiado para actualizarlo.
                 if (!Integer.toString(tablero[f][c]).equals(celdas[f][c].getText())) {
                     celdas[f][c].setText("" + tablero[f][c]);
 
+                    //Escondo la celda numero 16
                     if (tablero [f][c] == VACIO)
                         celdas [f][c].setVisible (false);
 
+                    //Hago visible la celda si no esta visible.
                     else if (!celdas [f][c].isVisible())
                         celdas[f][c].setVisible(true);
                 }
@@ -76,15 +81,13 @@ public class View extends JFrame {
         jmiSalir.setActionCommand("jmiSalir");
         jmiSalir.addActionListener(controller);
 
-        //Creación del menu.
         JMenu jmJuego = new JMenu("Juego");
 
-        //Inserción de los item de menu al menu.
+        //Inserción de los item de menu.
         jmJuego.add(jmiNuevoJuego);
         jmJuego.add(new JPopupMenu.Separator());
         jmJuego.add(jmiSalir);
 
-        //Inserción del menu en la barra de menu.
         JMenuBar jmb = new JMenuBar();
         jmb.add(jmJuego);
 
@@ -109,6 +112,7 @@ public class View extends JFrame {
                 if (tablero [f][c] == VACIO)
                     celdas [f][c].setVisible(false);
 
+                //Agrego al panel el label.
                 panel.add (celdas [f][c]);
             }
         }
@@ -116,7 +120,7 @@ public class View extends JFrame {
         return panel;
     }
 
-    public boolean gano () {
+    boolean gano () {
         int valor = 0;
 
         for (JLabel [] fila : celdas) {
@@ -133,7 +137,8 @@ public class View extends JFrame {
         return true;
     }
 
-    public void mostrarCeldaVacia () {
+    //Mostrar celda numero 16.
+    void mostrarCeldaVacia () {
         celdas [poscVacio [0]][poscVacio [1]].setVisible(true);
     }
 }

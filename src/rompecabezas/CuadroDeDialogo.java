@@ -40,6 +40,7 @@ public class CuadroDeDialogo extends JDialog implements ActionListener {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                //Juego nuevo.
                 Tablero.cargarTablero();
                 view.actualizarCeldas();
                 dispose();
@@ -86,6 +87,7 @@ public class CuadroDeDialogo extends JDialog implements ActionListener {
         if (e.getActionCommand().equals("jbSalir"))
             System.exit(0);
 
+        //Juego nuevo.
         else {
             Tablero.cargarTablero();
             view.actualizarCeldas();
